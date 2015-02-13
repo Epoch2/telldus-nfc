@@ -52,7 +52,7 @@ $app->get('/devices', function() use ($telldus) {
 
         echo json_encode([
             'success' => true,
-            'data' => $devices
+            'devices' => $devices
         ]);
     } else {
         echo successJson(false);
