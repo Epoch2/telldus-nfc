@@ -50,7 +50,12 @@ class TelldusApi
         if (is_numeric($id)) {
             $id = (int)$id;
 
-            $this->request(['device', 'turnOn'], ['id' => $id]);
+            try {
+                $this->request(['device', 'turnOn'], ['id' => $id]);
+            } catch (Exception $e) {
+                return false;
+            }
+            return true;
         }
     }
 
@@ -59,8 +64,24 @@ class TelldusApi
         if (is_numeric($id)) {
             $id = (int)$id;
 
-            $this->request(['device', 'turnOff'], ['id' => $id]);
+            try {
+                $this->request(['device', 'turnOff'], ['id' => $id]);
+            } catch (Exception $e) {
+                return false;
+            }
+            return true;
         }
+    }
+
+    public function listDevices()
+    {
+        try {
+            $response = $this->request(['devices', 'list']);
+        } catch (Exception $e) {
+            return false;
+        }
+
+        return $response;
     }
 
     public function toggle($id)
@@ -68,7 +89,11 @@ class TelldusApi
         if (is_numeric($id)) {
             $id = (int)$id;
 
-            $response = $this->request(['device', 'history'], ['id' => $id, 'to' => time()]);
+            try {
+                $response = $this->request(['device', 'history'], ['id' => $id, 'to' => time()]);
+            } catch (Exception $e) {
+                return false;
+            }
 
             // Walk backwards in history until we find the last successful command
             // which will indicate the device's current status
@@ -85,17 +110,30 @@ class TelldusApi
 
             switch ($lastSuccessfulCommand) {
                 case self::STATE_OFF:
-                    $this->on($id);
+                    try {
+                        $this->on($id);
+                    } catch (Exception $e) {
+                        return false;
+                    }
                     break;
                 case self::STATE_ON:
-                    $this->off($id);
+                    try {
+                        $this->off($id);
+                    } catch (Exception $e) {
+                        return false;
+                    }
                     break;
                 default:
                     // On seems like a sane default...
-                    $this->on($id);
+                    try {
+                        $this->on($id);
+                    } catch (Exception $e) {
+                        return false;
+                    }
                     break;
             }
+
+            return true;
         }
     }
-
 }
