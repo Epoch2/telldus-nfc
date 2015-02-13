@@ -1,8 +1,6 @@
 # telldus-nfc
 
-RESTful proxy server for controlling Telldus™ enabled appliances.
-
-Provides a simple API for ad-hoc interaction with the Telldus home automation system. Especially useful for devices incapable of the high level protocols used in the official Telldus API, such as <code>OAuth</code>.
+Proxy service with a simple API for ad-hoc interaction with the Telldus home automation system. Useful for devices incapable of authenticating themselves against the official Telldus API (using <code>OAuth</code>).
 
 Originally intented for providing short URLs to store in <code>ISO/IEC 14443</code> compliant low-memory NFC tags, but can be used wherever Telldus interaction through plain HTTP/1.1 is required.
 
@@ -11,6 +9,7 @@ Originally intented for providing short URLs to store in <code>ISO/IEC 14443</co
 2. Set your web server's webroot to the <code>public/</code> folder.
 
 ## Usage
+All API endpoints are accessible using HTTP GET.
 
 ### /devices
 Lists all registered devices.
