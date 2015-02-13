@@ -29,8 +29,14 @@ $app->get('/device/:id/:action', function($id, $action) use ($telldus) {
             echo successJson($telldus->off($id));
             break;
         case 'toggle':
-            echo successJson($telldus->toggle($id));
-            break;
+            $response = $telldus->toggle($id);
+
+            if (!$response) {
+                echo successJson(false);
+                break;
+            } else if (is_array($response)) {
+                echo json_encode(array_merge(['success' => true], $response));
+            }
     }
 });
 

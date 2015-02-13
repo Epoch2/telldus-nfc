@@ -115,6 +115,7 @@ class TelldusApi
                     } catch (Exception $e) {
                         return false;
                     }
+                    return ['action' => 'on'];
                     break;
                 case self::STATE_ON:
                     try {
@@ -122,6 +123,7 @@ class TelldusApi
                     } catch (Exception $e) {
                         return false;
                     }
+                    return ['action' => 'off'];
                     break;
                 default:
                     // On seems like a sane default...
@@ -130,10 +132,9 @@ class TelldusApi
                     } catch (Exception $e) {
                         return false;
                     }
+                    return ['action' => 'on'];
                     break;
             }
-
-            return true;
         }
     }
 }
