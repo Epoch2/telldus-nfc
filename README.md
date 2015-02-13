@@ -1,8 +1,8 @@
 # telldus-nfc
 
-Proxy service with a simple API for ad-hoc interaction with the Telldus home automation system. Useful for devices incapable of authenticating themselves against the official Telldus API (using <code>OAuth</code>).
+Proxy service with a simple API for ad-hoc interaction with the Telldus home automation system. Useful for devices that cannot use <code>OAuth</code> to authenticate themselves against the official Telldus API.
 
-Originally intented for providing short URLs to store in <code>ISO/IEC 14443</code> compliant low-memory NFC tags, but can be used wherever Telldus interaction through plain HTTP/1.1 is required.
+Originally intented for accessing Telldus using URLs stored in <code>ISO/IEC 14443</code> compliant low-memory NFC tags, but can be used wherever Telldus interaction through plain HTTP/1.1 is required.
 
 ## Installation
 1. Enter your Telldus API credentials in <code>TelldusCredentials.php.example</code> and rename the file to <code>TelldusCredentials.php</code>.
