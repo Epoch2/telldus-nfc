@@ -1,5 +1,9 @@
 <?php
 
+ini_set('display_errors',1);
+ini_set('display_startup_errors',1);
+error_reporting(-1);
+
 require '../vendor/autoload.php';
 require '../TelldusCredentials.php';
 require '../TelldusApi.php';
@@ -20,23 +24,44 @@ function successJson($success=true)
     return json_encode(['success' => $success]);
 }
 
-$app->get('/device/:id/:action', function($id, $action) use ($telldus) {
+function hideJs()
+{
+    return '<html><script type="text/javascript">window.onload = function() {window.location.href = "about:blank";};</script></html>';
+}
+
+$app->get('/device/:id/:action', function($id, $action) use ($telldus, $app) {
+    $hide = $app->request->get('hide');
+
     switch ($action) {
         case 'on':
-            echo successJson($telldus->on($id));
+            $response = $telldus->on($id);
+            if ($hide) {
+                echo hideJs();
+            } else {
+                echo successJson($response);
+            }
             break;
         case 'off':
-            echo successJson($telldus->off($id));
+            $response = $telldus->off($id);
+            if ($hide) {
+                echo hideJs();
+            } else {
+                echo successJson($response);
+            }
             break;
         case 'toggle':
             $response = $telldus->toggle($id);
 
-            if (!$response) {
-                echo successJson(false);
-                break;
-            } else if (is_array($response)) {
-                echo json_encode(array_merge(['success' => true], $response));
+            if ($hide) {
+                echo hideJs();
+            } else {
+                if (!$response) {
+                    echo successJson(false);
+                } else if (is_array($response)) {
+                    echo json_encode(array_merge(['success' => true], $response));
+                }
             }
+            break;
     }
 });
 
